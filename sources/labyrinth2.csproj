@@ -1,0 +1,238 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{517E09FE-C201-4A90-9127-4F66A7995949}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Game</RootNamespace>
+    <AssemblyName>Game</AssemblyName>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Audio\AudioManager.cs" />
+    <Compile Include="Audio\OpenAL\NativeAPI\AL.cs" />
+    <Compile Include="Audio\OpenAL\NativeAPI\ALC.cs" />
+    <Compile Include="Box.cs" />
+    <Compile Include="DeferredRenderer.cs" />
+    <Compile Include="Graphics\Renderer\OpenGL\Buffer.cs" />
+    <Compile Include="Graphics\Renderer\OpenGL\Caps.cs" />
+    <Compile Include="Graphics\Renderer\OpenGL\Device.cs" />
+    <Compile Include="Graphics\Renderer\OpenGL\Enums.cs" />
+    <Compile Include="Graphics\Renderer\OpenGL\Extensions.cs" />
+    <Compile Include="Graphics\Renderer\OpenGL\Framebuffer.cs" />
+    <Compile Include="Graphics\Renderer\OpenGL\Loader.cs" />
+    <Compile Include="Graphics\Renderer\OpenGL\NativeAPI.cs" />
+    <Compile Include="Graphics\Renderer\OpenGL\RenderState.cs" />
+    <Compile Include="Graphics\Renderer\OpenGL\Shader.cs" />
+    <Compile Include="Graphics\Renderer\OpenGL\Texture.cs" />
+    <Compile Include="Graphics\Renderer\OpenGL\VertexFormat.cs" />
+    <Compile Include="Graphics\Renderer\OpenGL\VF.cs" />
+    <Compile Include="Graphics\VertexNormalVisualizer.cs" />
+    <Compile Include="Graphics\Window\DisplayMode.cs" />
+    <Compile Include="Graphics\Window\GameWindow.cs" />
+    <Compile Include="Graphics\Window\InputEvents.cs" />
+    <Compile Include="Graphics\Window\IPlatformContext.cs" />
+    <Compile Include="Graphics\Window\IPlatformWindow.cs" />
+    <Compile Include="Graphics\Window\Linux\LinuxWindow.cs" />
+    <Compile Include="Graphics\Window\MacOSX\MacOSXWindow.cs" />
+    <Compile Include="Graphics\Window\Windows\DummyWindow.cs" />
+    <Compile Include="Graphics\Window\Windows\NativeAPI.cs" />
+    <Compile Include="Graphics\Window\Windows\WindowsContext.cs" />
+    <Compile Include="Graphics\Window\Windows\WindowsWindow.cs" />
+    <Compile Include="Graphics\WireframeVisualizer.cs" />
+    <Compile Include="Language.cs" />
+    <Compile Include="Camera.cs" />
+    <Compile Include="FPS.cs" />
+    <Compile Include="Game.cs" />
+    <Compile Include="Lights.cs" />
+    <Compile Include="Loaders.cs" />
+    <Compile Include="Math\Matrix2.cs" />
+    <Compile Include="Math\Matrix3.cs" />
+    <Compile Include="Math\Matrix4.cs" />
+    <Compile Include="Math\Quaternion.cs" />
+    <Compile Include="Math\Vector2.cs" />
+    <Compile Include="Math\Vector3.cs" />
+    <Compile Include="Math\Vector4.cs" />
+    <Compile Include="Physics\Newton\Body.cs" />
+    <Compile Include="Physics\Newton\Collision.cs" />
+    <Compile Include="Physics\Newton\CollisionInfo.cs" />
+    <Compile Include="Physics\Newton\Contact.cs" />
+    <Compile Include="Physics\Newton\ContactJoint.cs" />
+    <Compile Include="Physics\Newton\Joints\BallAndSocketJoint.cs" />
+    <Compile Include="Physics\Newton\Joints\CustomJoint.cs" />
+    <Compile Include="Physics\Newton\Joints\HingeJoint.cs" />
+    <Compile Include="Physics\Newton\Joints\MultiBodyVehicle.cs" />
+    <Compile Include="Physics\Newton\Joints\UpVectorJoint.cs" />
+    <Compile Include="Physics\Newton\MaterialCollision.cs" />
+    <Compile Include="Physics\Newton\MaterialPair.cs" />
+    <Compile Include="Physics\Newton\NativeAPI.cs" />
+    <Compile Include="Physics\Newton\NewtonObject.cs" />
+    <Compile Include="Physics\Newton\Utilities.cs" />
+    <Compile Include="Physics\Newton\World.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Storage\DirectoryArchive.cs" />
+    <Compile Include="Storage\FileSystem.cs" />
+    <Compile Include="Storage\IArchive.cs" />
+    <Compile Include="Storage\Ogg\NativeAPI.cs" />
+    <Compile Include="Storage\Ogg\TheoraStream.cs" />
+    <Compile Include="Storage\Ogg\VorbisStream.cs" />
+    <Compile Include="Storage\Zip\ZipArchive.cs" />
+    <Compile Include="Storage\Zip\ZipStreamDeflated.cs" />
+    <Compile Include="Storage\Zip\ZipStreamStored.cs" />
+    <Compile Include="Math\Degrees.cs" />
+    <Compile Include="Utilities\ExtensionAttribute.cs" />
+    <Compile Include="Utilities\HashSet.cs" />
+    <Compile Include="Utilities\NativeLoader.cs" />
+    <Compile Include="Utilities\Platform.cs" />
+    <Compile Include="Math\Radians.cs" />
+    <Compile Include="Utils.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\newton.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\ogg.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\openal32.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\textures\texcol3_001.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\textures\texcol3_001n.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\textures\texcol4_032.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\textures\texcol4_032n.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\shaders\common.glsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\shaders\deferred_ambient.glsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\shaders\deferred_geometry.glsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\shaders\deferred_pointlight.glsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\shaders\deferred_spotlight.glsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\shaders\fullscreen_quad.glsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\shaders\generate_dp_shadowmap.glsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\shaders\generate_shadowmap.glsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\shaders\single_color.glsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PostBuildEvent>move $(TargetDir)\Resources\*.dll $(TargetDir)</PostBuildEvent>
+  </PropertyGroup>
+</Project>
