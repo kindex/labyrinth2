@@ -93,6 +93,8 @@
     <Compile Include="Graphics\Window\Windows\WindowsContext.cs" />
     <Compile Include="Graphics\Window\Windows\WindowsWindow.cs" />
     <Compile Include="Graphics\WireframeVisualizer.cs" />
+    <Compile Include="Labyrinth\Generator\Generator.cs" />
+    <Compile Include="Labyrinth\Generator\Matrix.cs" />
     <Compile Include="Language.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="FPS.cs" />
