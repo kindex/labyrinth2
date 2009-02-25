@@ -11,16 +11,11 @@ namespace Game
         Vector3 move = Vector3.Zero;
         Device device;
         bool visualize_volume = false;
-        const int boxCount = 5;
-        Box[] boxes;
+        List<Box> boxes = new List<Box>();
 
-        Graphics.Renderer.OpenGL.Buffer floorVB;
-        Graphics.Renderer.OpenGL.Buffer floorIB;
         Graphics.Renderer.OpenGL.Buffer boxVB;
         Graphics.Renderer.OpenGL.Buffer boxIB;
 
-        Texture2D floorTexture;
-        Texture2D floorTextureNMap;
         Texture2D boxTexture;
         Texture2D boxTextureNMap;
 
@@ -32,5 +27,6 @@ namespace Game
         Shader single_color;
         DeferredRenderer renderer;
         SpectatorCamera camera = new SpectatorCamera();
+        Labyrinth.Generator.Matrix labyrinth_matrix;
     }
 }

@@ -22,31 +22,23 @@ namespace Game.Labyrinth.Generator
 
         public bool isRightBorder(int x, int y)
         {
-            if (!(x < dim_x && y >= 0))
+            if (x < -1 || y < 0 || x >= dim_x || y >= dim_y)
             {
                 return false;
             }
-            if ((x < 0 || y < 0))
-            {
-                return true;
-            }
-            return y + 1 > dim_y
-                || x + 1 >= dim_x
-                || matrix[x, x].right;
+            return x == -1
+                || x == dim_x-1
+                || matrix[x, y].right;
         }
 
         public bool isUpBorder(int x, int y)
         {
-            if (!(y < dim_y && x >= 0))
+            if (x < 0 || y < -1 || x >= dim_x || y >= dim_y)
             {
                 return false;
             }
-            if (x < 0 || y < 0)
-            {
-                return true;
-            }
-            return y + 1 >= dim_y
-                || x >= dim_x
+            return y == -1
+                || y == dim_y-1
                 || matrix[x, y].up;
         }
 

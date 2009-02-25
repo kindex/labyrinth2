@@ -30,11 +30,6 @@ namespace Game
           
         void DisposeObjects()
         {
-            floorVB.Dispose();
-            floorIB.Dispose();
-            floorTexture.Dispose();
-            floorTextureNMap.Dispose();
-
             boxVB.Dispose();
             boxIB.Dispose();
             boxTexture.Dispose();
@@ -69,10 +64,6 @@ namespace Game
             device.RenderState.DepthTest = true;
             device.ApplyRenderState();
 
-            Vector3 cameraPosition = new Vector3(-1.0f, 3.0f, 5.0f);
-            Vector3 cameraTarget = new Vector3(0.0f, 0.0f, 0.0f);
-            camera.SetPosition(cameraPosition, cameraTarget, Vector3.UnitY);
-
             OnResize(Width, Height);
 
             renderer = new DeferredRenderer(device);
@@ -82,9 +73,6 @@ namespace Game
 
         public override void OnUnload()
         {
-            floorVB.Dispose();
-            floorIB.Dispose();
-
             renderer.Dispose();
 
             DisposeObjects();

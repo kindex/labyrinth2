@@ -13,6 +13,7 @@ namespace Game
         public static Vector3 UnitX = new Vector3(1, 0, 0);
         public static Vector3 UnitY = new Vector3(0, 1, 0);
         public static Vector3 UnitZ = new Vector3(0, 0, 1);
+        public static Vector3 Half = new Vector3(0.5f, 0.5f, 0.5f);
 
         public Vector3(float v)
         {

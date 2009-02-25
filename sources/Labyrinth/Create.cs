@@ -9,26 +9,7 @@ namespace Game
     {
         void Create()
         {
-            floorTexture = Loaders.LoadTexture2D_RGBA("texcol4_032.jpg", true);
-            floorTexture.SetWrap(TextureWrap.Repeat, TextureWrap.Repeat);
-            floorTexture.SetFilterAnisotropy(4.0f);
-
-            floorTextureNMap = Loaders.LoadTexture2D_RGBA("texcol4_032n.png", true);
-            floorTextureNMap.SetWrap(TextureWrap.Repeat, TextureWrap.Repeat);
-            floorTextureNMap.SetFilterAnisotropy(4.0f);
-
-            VF.PositionTexcoordNT[] dataVB = new VF.PositionTexcoordNT[4];
-            dataVB[0] = new VF.PositionTexcoordNT() { Position = new Vector3(-10, 0, -10), Texcoord = new Vector2(0, 0), Normal = Vector3.UnitY };
-            dataVB[1] = new VF.PositionTexcoordNT() { Position = new Vector3(-10, 0, +10), Texcoord = new Vector2(0, 20), Normal = Vector3.UnitY };
-            dataVB[2] = new VF.PositionTexcoordNT() { Position = new Vector3(+10, 0, +10), Texcoord = new Vector2(20, 20), Normal = Vector3.UnitY };
-            dataVB[3] = new VF.PositionTexcoordNT() { Position = new Vector3(+10, 0, -10), Texcoord = new Vector2(20, 0), Normal = Vector3.UnitY };
-
-            ushort[] dataIB = new ushort[] { 0, 1, 2, 0, 2, 3 };
-            Utils.calculate_TB(dataVB, dataIB);
-
-            floorVB = device.CreateVertexBuffer(BufferUsage.StaticDraw, dataVB);
-            floorIB = device.CreateIndexBuffer(BufferUsage.StaticDraw, dataIB);
-
+            labyrinth_matrix = Labyrinth.Generator.Generator.Generate(5, 5, 0);
 
             Vector3[] quadN = { 
                 new Vector3(1,0,0), new Vector3(-1, 0, 0),
@@ -51,18 +32,11 @@ namespace Game
                 boxDataVB[4 * quad + 1].Normal = quadN[quad];
                 boxDataVB[4 * quad + 2].Normal = quadN[quad];
                 boxDataVB[4 * quad + 3].Normal = quadN[quad];
-                boxDataVB[4 * quad + 0].Position = quadN[quad] * 0.5f - quadX[quad] * 0.5f - Vector3.Cross(quadN[quad], quadX[quad]) * 0.5f;
-                boxDataVB[4 * quad + 1].Position = quadN[quad] * 0.5f + quadX[quad] * 0.5f - Vector3.Cross(quadN[quad], quadX[quad]) * 0.5f;
-                boxDataVB[4 * quad + 2].Position = quadN[quad] * 0.5f + quadX[quad] * 0.5f + Vector3.Cross(quadN[quad], quadX[quad]) * 0.5f;
-                boxDataVB[4 * quad + 3].Position = quadN[quad] * 0.5f - quadX[quad] * 0.5f + Vector3.Cross(quadN[quad], quadX[quad]) * 0.5f;
 
-                for (int t = 0; t < 4; t++)
-                {
-                    boxDataVB[4 * quad + t].Position.X *= 0.4f;
-                    //boxDataVB[4 * quad + t].Position.Y *= 0.2f;
-                    //boxDataVB[4 * quad + t].Position.Y -= 0.3f;
-                    boxDataVB[4 * quad + t].Position.Z *= 0.4f;
-                }
+                boxDataVB[4 * quad + 0].Position = Vector3.Half + quadN[quad] * 0.5f - quadX[quad] * 0.5f - Vector3.Cross(quadN[quad], quadX[quad]) * 0.5f;
+                boxDataVB[4 * quad + 1].Position = Vector3.Half + quadN[quad] * 0.5f + quadX[quad] * 0.5f - Vector3.Cross(quadN[quad], quadX[quad]) * 0.5f;
+                boxDataVB[4 * quad + 2].Position = Vector3.Half + quadN[quad] * 0.5f + quadX[quad] * 0.5f + Vector3.Cross(quadN[quad], quadX[quad]) * 0.5f;
+                boxDataVB[4 * quad + 3].Position = Vector3.Half + quadN[quad] * 0.5f - quadX[quad] * 0.5f + Vector3.Cross(quadN[quad], quadX[quad]) * 0.5f;
 
                 boxDataVB[4 * quad + 0].Texcoord = new Vector2(0, 0);
                 boxDataVB[4 * quad + 1].Texcoord = new Vector2(1, 0);
@@ -90,15 +64,25 @@ namespace Game
             boxTextureNMap.SetWrap(TextureWrap.Repeat, TextureWrap.Repeat);
             boxTextureNMap.SetFilterAnisotropy(4.0f);
 
-            boxes = new Box[boxCount];
-            for (int i = 0; i < boxCount; i++)
+
+            boxes.Add(new Box(new Vector3(0, -0.1f, 0), new Vector3(labyrinth_matrix.dim_x, 0, labyrinth_matrix.dim_y))); // floor
+            boxes.Add(new Box(new Vector3(0, 0, 0), new Vector3(0.1f, 3, 0.1f))); // start
+            boxes.Add(new Box(new Vector3(labyrinth_matrix.dim_x, 0, labyrinth_matrix.dim_y), new Vector3(labyrinth_matrix.dim_x + 0.1f, 5, labyrinth_matrix.dim_y + 0.1f))); // finish
+
+            for (int x = -1; x <= labyrinth_matrix.dim_x; x++)
             {
-                boxes[i] = new Box(Matrix4.Translation(new Vector3(-1.0f, 0.5f, (i - boxCount / 3) * 1.5f)));
+                for (int y = -1; y <= labyrinth_matrix.dim_y; y++)
+                {
+                    if (labyrinth_matrix.isUpBorder(x, y))
+                    {
+                        boxes.Add(new Box(new Vector3(x, 0, y+1), new Vector3(x + 1, 1, y + 1.1f)));
+                    }
+                    if (labyrinth_matrix.isRightBorder(x, y))
+                    {
+                        boxes.Add(new Box(new Vector3(x+1, 0, y), new Vector3(x + 1.1f, 1, y + 1)));
+                    }
+                }
             }
-            //for (int i = boxCount; i < 2*boxCount; i++)
-            //{
-            //    boxes[i] = new Box(Matrix4.Translation(new Vector3(1.0f, 0.5f, (i - boxCount - boxCount / 3) * 1.5f)));
-            //}
 
             for (int i = 0; i < pointlights; i++)
             {
@@ -113,6 +97,10 @@ namespace Game
                     Color = new Vector3((float)random.NextDouble(), (float)random.NextDouble(), (float)random.NextDouble())
                 });
             }
+
+            Vector3 cameraPosition = new Vector3(0, 0, 0);
+            Vector3 cameraTarget = new Vector3(1, 0, 0);
+            camera.SetPosition(cameraPosition, cameraTarget, Vector3.UnitY);
         }
     }
 }
