@@ -65,8 +65,10 @@
     <Compile Include="Audio\AudioManager.cs" />
     <Compile Include="Audio\OpenAL\NativeAPI\AL.cs" />
     <Compile Include="Audio\OpenAL\NativeAPI\ALC.cs" />
-    <Compile Include="Box.cs" />
-    <Compile Include="DeferredRenderer.cs" />
+    <Compile Include="Graphics\Camera.cs" />
+    <Compile Include="Graphics\DeferredRenderer.cs" />
+    <Compile Include="Graphics\Lights.cs" />
+    <Compile Include="Graphics\Objects\Box.cs" />
     <Compile Include="Graphics\Renderer\OpenGL\Buffer.cs" />
     <Compile Include="Graphics\Renderer\OpenGL\Caps.cs" />
     <Compile Include="Graphics\Renderer\OpenGL\Device.cs" />
@@ -93,18 +95,19 @@
     <Compile Include="Graphics\Window\Windows\WindowsContext.cs" />
     <Compile Include="Graphics\Window\Windows\WindowsWindow.cs" />
     <Compile Include="Graphics\WireframeVisualizer.cs" />
+    <Compile Include="Labyrinth\Data.cs" />
+    <Compile Include="Labyrinth\Logic.cs" />
+    <Compile Include="Labyrinth\Game.cs" />
+    <Compile Include="Labyrinth\Create.cs" />
     <Compile Include="Labyrinth\Generator\Generator.cs" />
     <Compile Include="Labyrinth\Generator\Matrix.cs" />
-    <Compile Include="Language.cs" />
-    <Compile Include="Camera.cs" />
-    <Compile Include="FPS.cs" />
-    <Compile Include="Game.cs" />
-    <Compile Include="Lights.cs" />
-    <Compile Include="Loaders.cs" />
+    <Compile Include="Labyrinth\Render.cs" />
+    <Compile Include="Main.cs" />
     <Compile Include="Math\Matrix2.cs" />
     <Compile Include="Math\Matrix3.cs" />
     <Compile Include="Math\Matrix4.cs" />
     <Compile Include="Math\Quaternion.cs" />
+    <Compile Include="Math\Utils.cs" />
     <Compile Include="Math\Vector2.cs" />
     <Compile Include="Math\Vector3.cs" />
     <Compile Include="Math\Vector4.cs" />
@@ -136,11 +139,13 @@
     <Compile Include="Storage\Zip\ZipStreamStored.cs" />
     <Compile Include="Math\Degrees.cs" />
     <Compile Include="Utilities\ExtensionAttribute.cs" />
+    <Compile Include="Utilities\FPS.cs" />
     <Compile Include="Utilities\HashSet.cs" />
+    <Compile Include="Utilities\Language.cs" />
+    <Compile Include="Utilities\Loaders.cs" />
     <Compile Include="Utilities\NativeLoader.cs" />
     <Compile Include="Utilities\Platform.cs" />
     <Compile Include="Math\Radians.cs" />
-    <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

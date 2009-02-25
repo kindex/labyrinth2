@@ -11,6 +11,11 @@ namespace Game
             this.matrix = matrix;
         }
 
+        public Box(Vector3 min_point, Vector3 max_point)
+        {
+            matrix = Matrix4.Scale(max_point - min_point);
+        }
+
         public void Render(Matrix4 viewMatrix)
         {
             Device device = Device.Current;
