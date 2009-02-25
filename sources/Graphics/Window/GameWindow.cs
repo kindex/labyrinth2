@@ -70,12 +70,14 @@ namespace Game.Graphics.Window
 
         public void Run()
         {
+                Logger.write("Done loading native libraries");
             OnLoad();
             try
             {
                 double invFreq = 1.0 / (double)Stopwatch.Frequency;
                 long time = Stopwatch.GetTimestamp();
 
+                Logger.write("Entering main loop");
                 while (_running)
                 {
                     if (_window.ProcessEvents() == false)
@@ -93,6 +95,7 @@ namespace Game.Graphics.Window
 
                     _window.Context.SwapBuffers();
                 }
+                Logger.write("Leaving main loop");
             }
             finally
             {

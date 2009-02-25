@@ -35,7 +35,7 @@ namespace Game
                     }
                     else
                     {
-                        Console.WriteLine("Loading {0}", attr.DLL);
+                        Logger.write(string.Format("Loading {0}", attr.DLL));
                         lib = Load(attr.DLL);
                         libraries.Add(attr.DLL, lib);
                     }
@@ -53,7 +53,7 @@ namespace Game
 
             foreach (var kv in libraries)
             {
-                Console.WriteLine("Unloading {0}", kv.Key);
+                Logger.write(string.Format("Unloading {0}", kv.Key));
                 Unload(kv.Value);
             }
         }

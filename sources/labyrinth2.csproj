@@ -143,6 +143,7 @@
     <Compile Include="Utilities\HashSet.cs" />
     <Compile Include="Utilities\Language.cs" />
     <Compile Include="Utilities\Loaders.cs" />
+    <Compile Include="Utilities\Logger.cs" />
     <Compile Include="Utilities\NativeLoader.cs" />
     <Compile Include="Utilities\Platform.cs" />
     <Compile Include="Math\Radians.cs" />

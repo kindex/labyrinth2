@@ -1,18 +1,29 @@
+using System.Diagnostics;
+using System.IO;
+
 namespace Game
 {
     public static class EntryPoint
     {
         static void Main()
         {
-            //StreamWriter output = new StreamWriter("output.txt");
-            //output.AutoFlush = true;
-            //Console.SetOut(output);
+            System.Diagnostics.Trace.Listeners.Add(new TextWriterTraceListener(System.Console.Out));
 
-            NativeLoader.AutoLoad();
-
-            using (Game game = new Game())
+            using (FileStream fs = File.OpenWrite("labyrinth2.log"))
             {
-                game.Run();
+                System.Diagnostics.Trace.AutoFlush = true;
+                System.Diagnostics.Trace.Listeners.Add(new TextWriterTraceListener(fs));
+
+                Logger.write("Loading native libraries");
+                NativeLoader.AutoLoad();
+                Logger.write("Done loading native libraries");
+
+                using (Game game = new Game())
+                {
+                    game.Run();
+                }
+
+                System.Diagnostics.Trace.Listeners.Clear();
             }
         }
     }

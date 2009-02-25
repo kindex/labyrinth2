@@ -11,7 +11,7 @@ namespace Game.Graphics.Renderer.OpenGL
         {
             if (count++ == 0)
             {
-                Console.WriteLine("Loading opengl32.dll");
+                Logger.write("Loading opengl32.dll");
                 handle = NativeLoader.Load("opengl32.dll");
                 NativeLoader.LoadDelegates(handle, typeof(GL), Window.Windows.NativeAPI.wglGetProcAddress);
             }
@@ -21,7 +21,7 @@ namespace Game.Graphics.Renderer.OpenGL
         {
             if (--count == 0)
             {
-                Console.WriteLine("Unloading opengl32.dll");
+                Logger.write("Unloading opengl32.dll");
                 NativeLoader.Unload(handle);
             }
         }
