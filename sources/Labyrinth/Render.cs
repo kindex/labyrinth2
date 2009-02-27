@@ -9,16 +9,16 @@ namespace Game
     {
         void RenderObjects(Matrix4 viewMatrix)
         {
-            device.CurrentShader.GetSampler("texture").Set(boxTexture);
-            device.CurrentShader.GetSampler("texture_nmap").Set(boxTextureNMap);
-
             device.SetVertexBuffer(boxVB, 0);
             device.SetIndexBuffer(boxIB);
 
             foreach (Box box in boxes)
             {
+                device.CurrentShader.GetSampler("texture").Set(box.material.Texture);
+                device.CurrentShader.GetSampler("texture_nmap").Set(box.material.TextureNMap);
                 box.Render(viewMatrix);
             }
+
         }
 
     }

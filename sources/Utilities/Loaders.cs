@@ -188,22 +188,37 @@ namespace Game
 
         public static Texture2D LoadTexture2D_RGBA(string name, bool mipmap)
         {
-            Texture2D texture;
+            Texture2D texture =  null;
 
-            using (Bitmap bmp = new System.Drawing.Bitmap(Path.Combine(BaseDir, "textures/" + name)))
+            string path = Path.Combine("../../../res", name);
+            string[] extensions = { "bmp", "gif", "exig", "jpg", "png", "tiff"};
+
+            foreach (string ext in extensions)
             {
-                int width = bmp.Width;
-                int height = bmp.Height;
-
-                System.Drawing.Imaging.BitmapData data = bmp.LockBits(new Rectangle(0, 0, bmp.Width, height), System.Drawing.Imaging.ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-
                 try
                 {
-                    texture = Device.Current.CreateTexture2D(InternalFormat.RGBA8, width, height, PixelFormat.BGRA, PixelType.UnsignedByte, data.Scan0);
+                    using (Bitmap bmp = new System.Drawing.Bitmap(path + "." + ext))
+                    {
+                        int width = bmp.Width;
+                        int height = bmp.Height;
+
+                        System.Drawing.Imaging.BitmapData data = bmp.LockBits(new Rectangle(0, 0, bmp.Width, height), System.Drawing.Imaging.ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+                        try
+                        {
+                            texture = Device.Current.CreateTexture2D(InternalFormat.RGBA8, width, height, PixelFormat.BGRA, PixelType.UnsignedByte, data.Scan0);
+                        }
+                        finally
+                        {
+                            bmp.UnlockBits(data);
+                        }
+
+                        break;
+                    }
                 }
-                finally
+                catch (ArgumentException)
                 {
-                    bmp.UnlockBits(data);
+                    texture = null;
                 }
             }
 

@@ -32,8 +32,8 @@ namespace Game
         {
             boxVB.Dispose();
             boxIB.Dispose();
-            boxTexture.Dispose();
-            boxTextureNMap.Dispose();
+            //boxTexture.Dispose();
+            //boxTextureNMap.Dispose();
         }
 
         static Game()

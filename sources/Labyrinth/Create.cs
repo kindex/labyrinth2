@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using Game.Graphics.Renderer.OpenGL;
+using Game.Labyrinth.Character;
+using Game.Graphics;
 
 namespace Game
 {
@@ -55,21 +57,16 @@ namespace Game
             boxVB = device.CreateVertexBuffer(BufferUsage.StaticDraw, boxDataVB);
             boxIB = device.CreateIndexBuffer(BufferUsage.StaticDraw, indices);
 
-            boxTexture = Loaders.LoadTexture2D_RGBA("texcol3_001.jpg", true);
-            boxTexture.SetWrap(TextureWrap.Repeat, TextureWrap.Repeat);
-            boxTexture.SetFilterAnisotropy(4.0f);
-
-            boxTextureNMap = Loaders.LoadTexture2D_RGBA("texcol3_001n.png", true);
-            boxTextureNMap.SetWrap(TextureWrap.Repeat, TextureWrap.Repeat);
-            boxTextureNMap.SetFilterAnisotropy(4.0f);
+            Material box_m = new Material("wood_box");
+            Material floor_m = new Material("metal");
 
             // create world
             labyrinth_matrix = Labyrinth.Generator.Generator.Generate(7, 7, 0);
             ceil_size = new Vector3(2, 1, 3);
 
-            boxes.Add(new Box(new Vector3(0, -0.1f, 0), new Vector3(labyrinth_matrix.dim_x, 0, labyrinth_matrix.dim_y).MemberMul(ceil_size))); // floor
-            boxes.Add(new Box(new Vector3(0, 0, 0), new Vector3(0.1f, 3, 0.1f))); // start
-            boxes.Add(new Box(new Vector3(labyrinth_matrix.dim_x, 0, labyrinth_matrix.dim_y).MemberMul(ceil_size), new Vector3(labyrinth_matrix.dim_x + 0.1f, 5, labyrinth_matrix.dim_y + 0.1f).MemberMul(ceil_size))); // finish
+            boxes.Add(new Box(new Vector3(0, -0.1f, 0), new Vector3(labyrinth_matrix.dim_x, 0, labyrinth_matrix.dim_y).MemberMul(ceil_size), floor_m)); // floor
+            boxes.Add(new Box(new Vector3(0, 0, 0), new Vector3(0.1f, 3, 0.1f), box_m)); // start
+            boxes.Add(new Box(new Vector3(labyrinth_matrix.dim_x, 0, labyrinth_matrix.dim_y).MemberMul(ceil_size), new Vector3(labyrinth_matrix.dim_x + 0.1f, 5, labyrinth_matrix.dim_y + 0.1f).MemberMul(ceil_size), box_m)); // finish
 
             for (int x = -1; x <= labyrinth_matrix.dim_x; x++)
             {
@@ -77,11 +74,11 @@ namespace Game
                 {
                     if (labyrinth_matrix.isUpBorder(x, y))
                     {
-                        boxes.Add(new Box(new Vector3(x, 0, y + 1).MemberMul(ceil_size), new Vector3(x + 1, 1, y + 1.1f).MemberMul(ceil_size)));
+                        boxes.Add(new Box(new Vector3(x, 0, y + 1).MemberMul(ceil_size), new Vector3(x + 1, 1, y + 1.1f).MemberMul(ceil_size), box_m));
                     }
                     if (labyrinth_matrix.isRightBorder(x, y))
                     {
-                        boxes.Add(new Box(new Vector3(x + 1, 0, y).MemberMul(ceil_size), new Vector3(x + 1.1f, 1, y + 1).MemberMul(ceil_size)));
+                        boxes.Add(new Box(new Vector3(x + 1, 0, y).MemberMul(ceil_size), new Vector3(x + 1.1f, 1, y + 1).MemberMul(ceil_size), box_m));
                     }
                 }
             }
@@ -96,13 +93,19 @@ namespace Game
                     Shininess = 40.0f,
                     Radius = 2.0f,
                     Position = ceil_size * 0.5f,
-                    Color = new Vector3((float)random.NextDouble(), (float)random.NextDouble(), (float)random.NextDouble())
+                    Color = new Vector3((float)random.NextDouble(), (float)random.NextDouble(), (float)random.NextDouble()).GetNormalized()
                 });
             }
 
+            // Cmaera
             Vector3 cameraPosition = new Vector3(0.5f, 2, 0.5f);
             Vector3 cameraTarget = new Vector3(5, 0, 5);
             camera.SetPosition(cameraPosition, cameraTarget, Vector3.UnitY);
+
+            // Characters
+            Character character = new Character(ceil_size*0.5f);
+            characters.Add(character);
+            active_character = character;
         }
     }
 }
