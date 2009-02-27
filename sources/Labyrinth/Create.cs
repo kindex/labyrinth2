@@ -98,8 +98,8 @@ namespace Game
                 });
             }
 
-            Vector3 cameraPosition = new Vector3(0, 0, 0);
-            Vector3 cameraTarget = new Vector3(1, 0, 0);
+            Vector3 cameraPosition = new Vector3(0.5f, 2, 0.5f);
+            Vector3 cameraTarget = new Vector3(5, 0, 5);
             camera.SetPosition(cameraPosition, cameraTarget, Vector3.UnitY);
         }
     }
