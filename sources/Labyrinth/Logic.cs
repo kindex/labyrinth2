@@ -110,13 +110,27 @@ namespace Game
             Vector3 moveDirection = 3.0f * move;
             camera.Move(moveDirection, deltaTime);
 
-            for (int i = 0; i < lights.Count; i++)
+            float speed = 3f;
+            foreach (Light light in lights)
             {
-                float x = 2.0f * Radians.Sin(time * (0.21718f * i + 1) / 10);
-                float y = 0.1f;
-                float z = 2.0f * Radians.Cos(time * (0.31434f * i + 1) / 10);
+                int ceil_x = (int)Math.Floor(light.Position.X / ceil_size.X);
+                int ceil_y = (int)Math.Floor(light.Position.Z / ceil_size.Z);
 
-                lights[i].Position = new Vector3(x, y, z);
+                labyrinth_matrix.GetNextToExitCell(ref ceil_x, ref ceil_y);
+                Vector3 next = new Vector3((ceil_x + 0.5f) * ceil_size.X, light.Position.Y, (ceil_y + 0.5f) * ceil_size.Z);
+
+                float distance = speed*deltaTime;
+
+                if ((light.Position - next).Length < distance)
+                {
+                    light.Position = next;
+                }
+                else
+                {
+                    light.Position += (next - light.Position).GetNormalized() * distance;
+                }
+
+                speed *= 0.9f;
             }
         }
     }

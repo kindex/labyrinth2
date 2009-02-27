@@ -15,6 +15,8 @@ namespace Game.Labyrinth.Generator
                 public bool rightborder;
                 public bool upborder;
                 public bool was;
+                public int next_x;
+                public int next_y;
             }
             Node[,] matrix;
             static Random random = new Random();
@@ -38,7 +40,7 @@ namespace Game.Labyrinth.Generator
                 {
 	                Deep(0, 0, 0);
                 }
-	            //findpath(X-1, Y-1);
+                findpath(dim_x - 1, dim_y - 1);
 	            //findpath(X-1, 0);
 	            //findpath(0, Y-1);
 
@@ -78,7 +80,19 @@ namespace Game.Labyrinth.Generator
                 {
                     for (int y = 0; y < dim_y; y++)
                     {
-                        result.setBorders(x, y, matrix[x, y].rightborder, matrix[x, y].upborder);
+                        int next_x;
+                        int next_y;
+                        if (matrix[x, y].path && !(x == dim_x -1 && y == dim_y -1))
+                        {
+                            next_x = matrix[x, y].next_x;
+                            next_y = matrix[x, y].next_y;
+                        }
+                        else
+                        {
+                            next_x = x;
+                            next_y = y;
+                        }
+                        result.setCell(x, y, matrix[x, y].rightborder, matrix[x, y].upborder, next_x, next_y);
                     }
                 }
 
@@ -166,10 +180,30 @@ namespace Game.Labyrinth.Generator
                 Node cur_node = matrix[x, y];
                 cur_node.path = true;
                 int d = cur_node.dist - 1;
-                if (y > 0 && matrix[x, y - 1].dist == d) findpath(x, y - 1);
-                else if (x > 0 && matrix[x - 1, y].dist == d) findpath(x - 1, y);
-                else if (y < dim_y - 1 && matrix[x, y + 1].dist == d) findpath(x, y + 1);
-                else if (x < dim_x - 1 && matrix[x + 1, y].dist == d) findpath(x + 1, y);
+                if (y > 0 && matrix[x, y - 1].dist == d)
+                {
+                    matrix[x, y - 1].next_x = x;
+                    matrix[x, y - 1].next_y = y;
+                    findpath(x, y - 1);
+                }
+                else if (x > 0 && matrix[x - 1, y].dist == d)
+                {
+                    matrix[x - 1, y].next_x = x;
+                    matrix[x - 1, y].next_y = y;
+                    findpath(x - 1, y);
+                }
+                else if (y < dim_y - 1 && matrix[x, y + 1].dist == d)
+                {
+                    matrix[x, y + 1].next_x = x;
+                    matrix[x, y + 1].next_y = y;
+                    findpath(x, y + 1);
+                }
+                else if (x < dim_x - 1 && matrix[x + 1, y].dist == d)
+                {
+                    matrix[x + 1, y].next_x = x;
+                    matrix[x + 1, y].next_y = y;
+                    findpath(x + 1, y);
+                }
             }
 
         }

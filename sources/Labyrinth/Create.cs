@@ -9,8 +9,7 @@ namespace Game
     {
         void Create()
         {
-            labyrinth_matrix = Labyrinth.Generator.Generator.Generate(5, 5, 0);
-
+            // create box graph
             Vector3[] quadN = { 
                 new Vector3(1,0,0), new Vector3(-1, 0, 0),
                 new Vector3(0,1,0), new Vector3( 0,-1, 0),
@@ -64,10 +63,13 @@ namespace Game
             boxTextureNMap.SetWrap(TextureWrap.Repeat, TextureWrap.Repeat);
             boxTextureNMap.SetFilterAnisotropy(4.0f);
 
+            // create world
+            labyrinth_matrix = Labyrinth.Generator.Generator.Generate(7, 7, 0);
+            ceil_size = new Vector3(2, 1, 3);
 
-            boxes.Add(new Box(new Vector3(0, -0.1f, 0), new Vector3(labyrinth_matrix.dim_x, 0, labyrinth_matrix.dim_y))); // floor
+            boxes.Add(new Box(new Vector3(0, -0.1f, 0), new Vector3(labyrinth_matrix.dim_x, 0, labyrinth_matrix.dim_y).MemberMul(ceil_size))); // floor
             boxes.Add(new Box(new Vector3(0, 0, 0), new Vector3(0.1f, 3, 0.1f))); // start
-            boxes.Add(new Box(new Vector3(labyrinth_matrix.dim_x, 0, labyrinth_matrix.dim_y), new Vector3(labyrinth_matrix.dim_x + 0.1f, 5, labyrinth_matrix.dim_y + 0.1f))); // finish
+            boxes.Add(new Box(new Vector3(labyrinth_matrix.dim_x, 0, labyrinth_matrix.dim_y).MemberMul(ceil_size), new Vector3(labyrinth_matrix.dim_x + 0.1f, 5, labyrinth_matrix.dim_y + 0.1f).MemberMul(ceil_size))); // finish
 
             for (int x = -1; x <= labyrinth_matrix.dim_x; x++)
             {
@@ -75,11 +77,11 @@ namespace Game
                 {
                     if (labyrinth_matrix.isUpBorder(x, y))
                     {
-                        boxes.Add(new Box(new Vector3(x, 0, y+1), new Vector3(x + 1, 1, y + 1.1f)));
+                        boxes.Add(new Box(new Vector3(x, 0, y + 1).MemberMul(ceil_size), new Vector3(x + 1, 1, y + 1.1f).MemberMul(ceil_size)));
                     }
                     if (labyrinth_matrix.isRightBorder(x, y))
                     {
-                        boxes.Add(new Box(new Vector3(x+1, 0, y), new Vector3(x + 1.1f, 1, y + 1)));
+                        boxes.Add(new Box(new Vector3(x + 1, 0, y).MemberMul(ceil_size), new Vector3(x + 1.1f, 1, y + 1).MemberMul(ceil_size)));
                     }
                 }
             }
@@ -93,7 +95,7 @@ namespace Game
                     Specular = 0.5f,
                     Shininess = 40.0f,
                     Radius = 2.0f,
-                    Position = Vector3.Zero,
+                    Position = ceil_size * 0.5f,
                     Color = new Vector3((float)random.NextDouble(), (float)random.NextDouble(), (float)random.NextDouble())
                 });
             }

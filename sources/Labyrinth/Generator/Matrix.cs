@@ -6,18 +6,20 @@ namespace Game.Labyrinth.Generator
 {
     class Matrix
     {
-	    struct Node
+	    struct Cell
 	    {
 		    public bool right;
             public bool up;
-	    };
+            public int next_x;
+            public int next_y;
+        };
 
         // first index - x, second - y
-        Node[,] matrix;
+        Cell[,] matrix;
 
         public Matrix(int x, int y)
         {
-            matrix = new Node[x, y];
+            matrix = new Cell[x, y];
         }
 
         public bool isRightBorder(int x, int y)
@@ -58,15 +60,31 @@ namespace Game.Labyrinth.Generator
             }
         }
 
-        public void setBorders(int x, int y, bool right, bool up)
+        public void setCell(int x, int y, bool right, bool up, int next_x, int next_y)
         {
             matrix[x, y].right = right;
             matrix[x, y].up = up;
+            matrix[x, y].next_x = next_x;
+            matrix[x, y].next_y = next_y;
+        }
+
+        public void GetNextToExitCell(ref int x, ref int y)
+        {
+            if (x < 0 || y < 0 || x >= dim_x || y >= dim_y)
+            {
+                x = 0;
+                y = 0;
+            }
+            else
+            {
+                int original_x = x;
+                int original_y = y;
+                x = matrix[original_x, original_y].next_x;
+                y = matrix[original_x, original_y].next_y;
+            }
         }
     }
 }
-
-
 
 //class Labyrinth
 //{

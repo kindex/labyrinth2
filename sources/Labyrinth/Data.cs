@@ -19,14 +19,16 @@ namespace Game
         Texture2D boxTexture;
         Texture2D boxTextureNMap;
 
-        const int pointlights = 15;
-        const int spotlights = 5;
+        const int pointlights = 10;
         Random random = new Random();
         float time = 0;
         List<Light> lights = new List<Light>();
         Shader single_color;
         DeferredRenderer renderer;
         SpectatorCamera camera = new SpectatorCamera();
+
+        // Labyrinth
         Labyrinth.Generator.Matrix labyrinth_matrix;
+        Vector3 ceil_size;
     }
 }

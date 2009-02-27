@@ -45,10 +45,16 @@ namespace Game
 
         public void Normalize()
         {
-            float len = (float)(1.0 / Math.Sqrt(X * X +  Y * Y + Z * Z));
+            float len = (float)(1.0 / Math.Sqrt(X * X + Y * Y + Z * Z));
             X *= len;
             Y *= len;
             Z *= len;
+        }
+
+        public Vector3 GetNormalized()
+        {
+            float len = (float)(1.0 / Math.Sqrt(X * X + Y * Y + Z * Z));
+            return new Vector3(X * len, Y * len, Z * len);
         }
 
         public static Vector3 Normalize(Vector3 v)
@@ -214,6 +220,11 @@ namespace Game
         public static Vector3 MinComponents(Vector3 a, Vector3 b)
         {
             return new Vector3(Math.Min(a.X, b.X), Math.Min(a.Y, b.Y), Math.Min(a.Z, b.Z));
+        }
+
+        public Vector3 MemberMul(Vector3 a)
+        {
+            return new Vector3(a.X*this.X, a.Y*this.Y, a.Z*this.Z);
         }
     }
 }
