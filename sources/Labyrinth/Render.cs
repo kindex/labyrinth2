@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Game.Graphics.Renderer.OpenGL;
+using Game.Labyrinth.Character;
 
 namespace Game
 {
@@ -19,7 +20,12 @@ namespace Game
                 box.Render(viewMatrix);
             }
 
+            foreach (Character character in characters)
+            {
+                device.CurrentShader.GetSampler("texture").Set(character.Graph.material.Texture);
+                device.CurrentShader.GetSampler("texture_nmap").Set(character.Graph.material.TextureNMap);
+                character.Graph.Render(viewMatrix);
+            }
         }
-
     }
 }

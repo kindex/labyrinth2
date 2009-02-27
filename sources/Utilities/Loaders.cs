@@ -190,7 +190,7 @@ namespace Game
         {
             Texture2D texture =  null;
 
-            string path = Path.Combine("../../../res", name);
+            string path = Path.Combine("../../../data", name);
             string[] extensions = { "bmp", "gif", "exig", "jpg", "png", "tiff"};
 
             foreach (string ext in extensions)

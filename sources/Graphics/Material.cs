@@ -24,6 +24,7 @@ namespace Game.Graphics
             TextureNMap.SetFilterAnisotropy(4.0f);
         }
 
+        // TODO: cleanup resources
         public void Dispose()
         {
             Texture.Dispose();

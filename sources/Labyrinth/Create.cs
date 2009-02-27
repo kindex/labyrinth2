@@ -103,7 +103,7 @@ namespace Game
             camera.SetPosition(cameraPosition, cameraTarget, Vector3.UnitY);
 
             // Characters
-            Character character = new Character(ceil_size*0.5f);
+            Character character = new Character(ceil_size*0.5f, box_m);
             characters.Add(character);
             active_character = character;
         }
