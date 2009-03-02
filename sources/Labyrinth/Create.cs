@@ -11,6 +11,9 @@ namespace Game
     {
         void Create()
         {
+            // Physic
+            physic_world = new Physics.Newton.World();
+
             // create box graph
             Vector3[] quadN = { 
                 new Vector3(1,0,0), new Vector3(-1, 0, 0),
@@ -64,9 +67,9 @@ namespace Game
             labyrinth_matrix = Labyrinth.Generator.Generator.Generate(7, 7, 0);
             ceil_size = new Vector3(2, 1, 3);
 
-            boxes.Add(new Box(new Vector3(0, -0.1f, 0), new Vector3(labyrinth_matrix.dim_x, 0, labyrinth_matrix.dim_y).MemberMul(ceil_size), floor_m)); // floor
-            boxes.Add(new Box(new Vector3(0, 0, 0), new Vector3(0.1f, 3, 0.1f), box_m)); // start
-            boxes.Add(new Box(new Vector3(labyrinth_matrix.dim_x, 0, labyrinth_matrix.dim_y).MemberMul(ceil_size), new Vector3(labyrinth_matrix.dim_x + 0.1f, 5, labyrinth_matrix.dim_y + 0.1f).MemberMul(ceil_size), box_m)); // finish
+            boxes.Add(new Box(new Vector3(0, -0.1f, 0), new Vector3(labyrinth_matrix.dim_x, 0, labyrinth_matrix.dim_y).MemberMul(ceil_size), floor_m, physic_world)); // floor
+            boxes.Add(new Box(new Vector3(0, 0, 0), new Vector3(0.1f, 3, 0.1f), box_m, physic_world)); // start
+            boxes.Add(new Box(new Vector3(labyrinth_matrix.dim_x, 0, labyrinth_matrix.dim_y).MemberMul(ceil_size), new Vector3(labyrinth_matrix.dim_x + 0.1f, 5, labyrinth_matrix.dim_y + 0.1f).MemberMul(ceil_size), box_m, physic_world)); // finish
 
             for (int x = -1; x <= labyrinth_matrix.dim_x; x++)
             {
@@ -74,11 +77,11 @@ namespace Game
                 {
                     if (labyrinth_matrix.isUpBorder(x, y))
                     {
-                        boxes.Add(new Box(new Vector3(x, 0, y + 1).MemberMul(ceil_size), new Vector3(x + 1, 1, y + 1.1f).MemberMul(ceil_size), box_m));
+                        boxes.Add(new Box(new Vector3(x, 0, y + 1).MemberMul(ceil_size), new Vector3(x + 1, 1, y + 1.1f).MemberMul(ceil_size), box_m, physic_world));
                     }
                     if (labyrinth_matrix.isRightBorder(x, y))
                     {
-                        boxes.Add(new Box(new Vector3(x + 1, 0, y).MemberMul(ceil_size), new Vector3(x + 1.1f, 1, y + 1).MemberMul(ceil_size), box_m));
+                        boxes.Add(new Box(new Vector3(x + 1, 0, y).MemberMul(ceil_size), new Vector3(x + 1.1f, 1, y + 1).MemberMul(ceil_size), box_m, physic_world));
                     }
                 }
             }
@@ -99,13 +102,21 @@ namespace Game
 
             // Cmaera
             Vector3 cameraPosition = new Vector3(0.5f, 2, 0.5f);
-            Vector3 cameraTarget = new Vector3(5, 0, 5);
+            Vector3 cameraTarget = new Vector3(2, 0, 2);
             camera.SetPosition(cameraPosition, cameraTarget, Vector3.UnitY);
 
             // Characters
-            Character character = new Character(ceil_size*0.5f, box_m);
+            Character character = new Character(box_m);
             characters.Add(character);
             active_character = character;
+
+            active_character.PlaceToScene(ceil_size * 0.5f, physic_world);
+
+            active_character.Graph.physic_body.Velocity = new Vector3(1, 0, 1);
+
+            //Matrix4 a = active_character.Graph.physic_body.Matrix;
+            //physic_world.Update(1);
+            //Matrix4 b = active_character.Graph.physic_body.Matrix;
         }
     }
 }

@@ -10,6 +10,10 @@ namespace Game
     {
         public override void OnUpdate(float deltaTime)
         {
+            // Physic
+            physic_world.Update(deltaTime);
+
+            // Controls
             InputEvent ev;
             while ((ev = GetNextInputEvent()) != null)
             {
@@ -110,6 +114,8 @@ namespace Game
             Vector3 moveDirection = 3.0f * move;
             camera.Move(moveDirection, deltaTime);
 
+
+            // Animate lights
             float speed = 3f;
             foreach (Light light in lights)
             {

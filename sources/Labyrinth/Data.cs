@@ -17,7 +17,7 @@ namespace Game
         Graphics.Renderer.OpenGL.Buffer boxVB;
         Graphics.Renderer.OpenGL.Buffer boxIB;
 
-        const int pointlights = 2;
+        const int pointlights = 4;
         Random random = new Random();
         float time = 0;
         List<Light> lights = new List<Light>();
@@ -32,5 +32,8 @@ namespace Game
         // Characters
         List<Character> characters = new List<Character>();
         Character active_character;
+
+        // Physic
+        Physics.Newton.World physic_world;
     }
 }
