@@ -12,7 +12,7 @@ namespace Game.Graphics
             vbuf = Device.Current.CreateVertexBuffer<Vector3>(BufferUsage.DynamicDraw, 1024 * 1024);
             ibuf = Device.Current.CreateIndexBuffer<uint>(BufferUsage.DynamicDraw, 1024 * 1024);
 
-            shader = Loaders.LoadShader<VF.Position3>("only_color");
+            shader = Loaders.LoadShader<VF.Position3>("single_color");
             SetColor(new Vector3(1, 1, 1));
         }
 
@@ -25,7 +25,7 @@ namespace Game.Graphics
 
         public void SetColor(Vector3 color)
         {
-            shader.GetUniform("fragment_color").Set(color);
+            shader.GetUniform("color").Set(color);
         }
         
         public void Begin()

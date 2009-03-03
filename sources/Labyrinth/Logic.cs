@@ -35,85 +35,119 @@ namespace Game
                     //    OnResize(Width, Height);
                     //}
                     //else
-                    if (keyEvent.Key == Key.Escape)
+                    switch (keyEvent.Key)
                     {
-                        if (MouseCaptured)
-                        {
-                            MouseCaptured = false;
-                        }
-                        else
-                        {
-                            Close();
-                        }
-                    }
-                    else if (keyEvent.Key == Key.W)
-                    {
-                        move.Z += 1.0f;
-                    }
-                    else if (keyEvent.Key == Key.S)
-                    {
-                        move.Z -= 1.0f;
-                    }
-                    else if (keyEvent.Key == Key.A)
-                    {
-                        move.X -= 1.0f;
-                    }
-                    else if (keyEvent.Key == Key.D)
-                    {
-                        move.X += 1.0f;
-                    }
-                    else if (keyEvent.Key == Key.Q)
-                    {
-                        move.Y += 1.0f;
-                    }
-                    else if (keyEvent.Key == Key.Z)
-                    {
-                        move.Y -= 1.0f;
-                    }
-                    else if (keyEvent.Key == Key.Space)
-                    {
-                        visualize_volume = !visualize_volume;
+                        case Key.F1:
+                            if (camera is ThirdPersonCamera)
+                            {
+                                camera = new SpectatorCamera(camera);
+                            }
+                            else
+                            {
+                                camera = new ThirdPersonCamera(camera);
+                            }
+                            break;
+
+                        case Key.Escape:
+                            if (MouseCaptured)
+                            {
+                                MouseCaptured = false;
+                            }
+                            else
+                            {
+                                Close();
+                            }
+                            break;
+
+                        case Key.W:
+                            move.Z += 1.0f;
+                            break;
+
+                        case Key.S:
+                            move.Z -= 1.0f;
+                            break;
+
+                        case Key.A:
+                            move.X -= 1.0f;
+                            break;
+
+                        case Key.D:
+                            move.X += 1.0f;
+                            break;
+
+                        case Key.Q:
+                            move.Y += 1.0f;
+                            break;
+
+                        case Key.Z:
+                            move.Y -= 1.0f;
+                            break;
+
+                        case Key.Space:
+                            visualize_volume = !visualize_volume;
+                            break;
                     }
                 }
                 else if (ev is KeyReleasedEvent)
                 {
                     KeyReleasedEvent keyEvent = (KeyReleasedEvent)ev;
-                    if (keyEvent.Key == Key.W)
+                    switch (keyEvent.Key)
                     {
-                        move.Z -= 1.0f;
-                    }
-                    else if (keyEvent.Key == Key.S)
-                    {
-                        move.Z += 1.0f;
-                    }
-                    else if (keyEvent.Key == Key.A)
-                    {
-                        move.X += 1.0f;
-                    }
-                    else if (keyEvent.Key == Key.D)
-                    {
-                        move.X -= 1.0f;
-                    }
-                    else if (keyEvent.Key == Key.Q)
-                    {
-                        move.Y -= 1.0f;
-                    }
-                    else if (keyEvent.Key == Key.Z)
-                    {
-                        move.Y += 1.0f;
+                        case Key.W:
+                            move.Z -= 1.0f;
+                            break;
+
+                        case Key.S:
+                            move.Z += 1.0f;
+                            break;
+
+                        case Key.A:
+                            move.X += 1.0f;
+                            break;
+
+                        case Key.D:
+                            move.X -= 1.0f;
+                            break;
+
+                        case Key.Q:
+                            move.Y -= 1.0f;
+                            break;
+
+                        case Key.Z:
+                            move.Y += 1.0f;
+                            break;
                     }
                 }
             }
 
+
             if (MouseCaptured)
             {
                 Point mousePos = this.MousePosition;
-                camera.Rotate(mousePos.X * Radians.PI / Height, mousePos.Y * Radians.PI / Width);
+                Vector3 moveDirection = 3.0f * move;
+
+                if (camera is SpectatorCamera)
+                {
+                    camera.Rotate(mousePos.X * Radians.PI / Height, mousePos.Y * Radians.PI / Width);
+                    camera.Move(moveDirection, deltaTime);
+                }
+                else if (camera is ThirdPersonCamera) // fixed
+                {
+                    ThirdPersonCamera o_camera = (ThirdPersonCamera)camera;
+                    Vector3 center = active_character.Position;
+
+                    o_camera.SetTargetPosition(center);
+
+                    o_camera.Rotate(mousePos.X * Radians.PI / Height, mousePos.Y * Radians.PI / Width);
+
+                    Vector3 direction = (center - o_camera.Position).GetNormalized();
+//                    o_camera.SetPosition((center - direction) * 5, Vector3.UnitY);
+
+                    Vector3 real_direction = o_camera.GetMoveDirection(moveDirection);
+
+                    active_character.Body.physic_body.AddImpulse(real_direction * deltaTime * 10, active_character.Position);
+                }
             }
-
-            Vector3 moveDirection = 3.0f * move;
-            camera.Move(moveDirection, deltaTime);
-
 
             // Animate lights
             float speed = 3f;

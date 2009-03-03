@@ -9,6 +9,8 @@ namespace Game
         public Physics.Newton.Body physic_body { get; private set; }
         public Vector3 inertia { get; private set; }
 
+        Matrix4 physicOffsetMatrix;
+
         //public Box(Matrix4 matrix, Material material)
         //{
         //    this.matrix = matrix;
@@ -25,10 +27,12 @@ namespace Game
             Vector3 inertia;
             collision.CalculateInertialMatrix(out inertia, out origin);
             this.inertia = inertia;
-            physic_body.Matrix = Matrix4.Scale(box_size) * Matrix4.Translation(min_point);
+            physic_body.Matrix = Matrix4.Translation((min_point + max_point)/2);
+            physic_body.CentreOfMass = origin;
+
+            physicOffsetMatrix = Matrix4.Scale(box_size); // *Matrix4.Translation(-box_size / 2);
 
             collision.Release();
-
 
             this.material = material;
         }
@@ -36,9 +40,7 @@ namespace Game
         public void Render(Matrix4 viewMatrix)
         {
             Device device = Device.Current;
-
-            device.SetMatrix(MatrixModeEnum.ModelView, physic_body.Matrix * viewMatrix);
-
+            device.SetMatrix(MatrixModeEnum.ModelView, physicOffsetMatrix * physic_body.Matrix * viewMatrix);
             device.DrawElements(BeginMode.Triangles, 0, 6 * 6);
         }
     }

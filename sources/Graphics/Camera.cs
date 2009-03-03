@@ -4,6 +4,15 @@ namespace Game
 {
     public abstract class Camera
     {
+        public Camera(Camera camera)
+        {
+            XAxis = camera.XAxis;
+            YAxis = camera.YAxis;
+            ZAxis = camera.ZAxis;
+
+            Position = camera.Position;
+        }
+
         public Camera()
         {
             XAxis = Vector3.UnitX;
@@ -21,7 +30,7 @@ namespace Game
         {
             get
             {
-                if (viewMatrixDirty)
+                if (viewMatrixDirty || renormalizeAxes)
                 {
                     UpdateViewMatrix();
                 }
@@ -72,6 +81,10 @@ namespace Game
 
     public abstract class FreeLookingCamera : Camera
     {
+        public FreeLookingCamera() : base() { }
+
+        public FreeLookingCamera(Camera camera) : base(camera) { }
+
         public override void Move(Vector3 direction, float elapsedTimeInSecs)
         {
             Position += (XAxis * direction.X + Vector3.UnitY * direction.Y + ForwardMovementDirection * direction.Z) * elapsedTimeInSecs;
@@ -147,6 +160,16 @@ namespace Game
 
     public sealed class SpectatorCamera : FreeLookingCamera
     {
+        public SpectatorCamera()
+            : base()
+        {
+        }
+        
+        public SpectatorCamera(Camera camera)
+            : base(camera)
+        {
+        }
+
         protected override Vector3 ForwardMovementDirection
         {
             get
@@ -158,6 +181,9 @@ namespace Game
 
     public abstract class FixedLookingCamera : Camera
     {
+        public FixedLookingCamera() : base() { }
+        public FixedLookingCamera(Camera camera) : base(camera) { }
+
         public void SetPosition(Vector3 position, Vector3 up)
         {
             Position = position;
@@ -177,6 +203,15 @@ namespace Game
 
     public sealed class OrbitCamera : FixedLookingCamera
     {
+        public OrbitCamera()
+            : base()
+        {
+        }
+
+        public OrbitCamera(Camera camera)
+            : base(camera)
+        {
+        }
 
         public override void Move(Vector3 direction, float elapsedTimeInSecs)
         {
@@ -186,7 +221,7 @@ namespace Game
         {
             pitchRadians += pitch;
 
-            float halfPI = Radians.PI / 2.0f;
+            const float halfPI = Radians.PI / 2.0f;
 
             if (pitchRadians > halfPI)
             {
@@ -229,12 +264,80 @@ namespace Game
 
     public sealed class ThirdPersonCamera : FixedLookingCamera
     {
+        public ThirdPersonCamera() : base() { }
+        public ThirdPersonCamera(Camera camera) : base(camera) { }
+        public ThirdPersonCamera(Vector3 newTargetPosition, Vector3 upVector, float radious) : base()
+        {
+            TargetPosition = newTargetPosition;
+            Position = Position + new Vector3(-1, 1, -1).GetNormalized() * radious;
+
+            ZAxis = Vector3.Normalize(TargetPosition - Position);
+            XAxis = Vector3.Normalize(Vector3.Cross(upVector, ZAxis));
+            YAxis = Vector3.Normalize(Vector3.Cross(ZAxis, XAxis));
+        }
+
         public override void Move(Vector3 direction, float elapsedTimeInSecs)
         {
         }
 
+        public void SetTargetPosition(Vector3 newTargetPosition)
+        {
+            Position += newTargetPosition - this.TargetPosition;
+            this.TargetPosition = newTargetPosition;
+            viewMatrixDirty = true;
+        }
+
         public override void Rotate(float heading, float pitch)
         {
+            pitchRadians += pitch;
+
+            const float halfPI = Radians.PI / 2.0f;
+
+            if (pitchRadians > halfPI)
+            {
+                pitch = halfPI - (pitchRadians - pitch);
+                pitchRadians = halfPI;
+            }
+
+            if (pitchRadians < -halfPI)
+            {
+                pitch = -halfPI - (pitchRadians - pitch);
+                pitchRadians = -halfPI;
+            }
+
+            Vector3 delta = Position - TargetPosition;
+
+            if (heading != 0.0f)
+            {
+                Matrix4 rotation = Matrix4.RotateY(heading);
+                XAxis = Vector3.TransformVector(XAxis, rotation);
+                ZAxis = Vector3.TransformVector(ZAxis, rotation);
+
+                delta = Vector3.TransformVector(delta, rotation);
+                Position = delta + TargetPosition;
+
+                renormalizeAxes = true;
+            }
+
+            if (pitch != 0.0f)
+            {
+                Matrix4 rotation = Matrix4.Rotate(XAxis, pitch);
+                YAxis = Vector3.TransformVector(YAxis, rotation);
+                ZAxis = Vector3.TransformVector(ZAxis, rotation);
+
+                Position = Vector3.TransformVector(delta, rotation) + TargetPosition;
+
+                renormalizeAxes = true;
+            }
+        }
+
+        public Vector3 GetMoveDirection(Vector3 direction)
+        {
+            Vector3 result = direction.X * XAxis
+                            + direction.Y * Vector3.UnitY
+                            + direction.Z * new Vector3(ZAxis.X, 0, ZAxis.Z).GetNormalized();
+
+            return result.GetNormalized();
         }
     }
 }

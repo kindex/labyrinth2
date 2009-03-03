@@ -11,7 +11,7 @@ namespace Game.Labyrinth.Character
         const float mass = 1.0f;
 
         public string Name { get; private set; }
-        public Box Graph { get; private set; }
+        public Box Body { get; private set; }
 
         Material material;
 
@@ -22,13 +22,21 @@ namespace Game.Labyrinth.Character
 
         public void PlaceToScene(Vector3 position, Physics.Newton.World world)
         {
-            Graph = new Box(position - box_size / 2, position + box_size / 2, material, world);
+            Body = new Box(position - box_size / 2, position + box_size / 2, material, world);
 
-            Graph.physic_body.SetMass(mass, mass*Graph.inertia);
-            Graph.physic_body.SetForceAndTorqueEvent += delegate(Physics.Newton.Body body, float timestep, int threadIndex)
+            Body.physic_body.SetMass(mass, mass*Body.inertia);
+            Body.physic_body.SetForceAndTorqueEvent += delegate(Physics.Newton.Body body, float timestep, int threadIndex)
                 {
                     body.AddForce(new Vector3(0, -9.8f, 0) * mass);
                 };
+        }
+
+        public Vector3 Position
+        {
+            get
+            {
+                return Body.physic_body.Matrix.Posit;
+            }
         }
     }
 }

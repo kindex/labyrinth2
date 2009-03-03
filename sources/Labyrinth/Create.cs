@@ -37,10 +37,10 @@ namespace Game
                 boxDataVB[4 * quad + 2].Normal = quadN[quad];
                 boxDataVB[4 * quad + 3].Normal = quadN[quad];
 
-                boxDataVB[4 * quad + 0].Position = Vector3.Half + quadN[quad] * 0.5f - quadX[quad] * 0.5f - Vector3.Cross(quadN[quad], quadX[quad]) * 0.5f;
-                boxDataVB[4 * quad + 1].Position = Vector3.Half + quadN[quad] * 0.5f + quadX[quad] * 0.5f - Vector3.Cross(quadN[quad], quadX[quad]) * 0.5f;
-                boxDataVB[4 * quad + 2].Position = Vector3.Half + quadN[quad] * 0.5f + quadX[quad] * 0.5f + Vector3.Cross(quadN[quad], quadX[quad]) * 0.5f;
-                boxDataVB[4 * quad + 3].Position = Vector3.Half + quadN[quad] * 0.5f - quadX[quad] * 0.5f + Vector3.Cross(quadN[quad], quadX[quad]) * 0.5f;
+                boxDataVB[4 * quad + 0].Position = quadN[quad] * 0.5f - quadX[quad] * 0.5f - Vector3.Cross(quadN[quad], quadX[quad]) * 0.5f;
+                boxDataVB[4 * quad + 1].Position = quadN[quad] * 0.5f + quadX[quad] * 0.5f - Vector3.Cross(quadN[quad], quadX[quad]) * 0.5f;
+                boxDataVB[4 * quad + 2].Position = quadN[quad] * 0.5f + quadX[quad] * 0.5f + Vector3.Cross(quadN[quad], quadX[quad]) * 0.5f;
+                boxDataVB[4 * quad + 3].Position = quadN[quad] * 0.5f - quadX[quad] * 0.5f + Vector3.Cross(quadN[quad], quadX[quad]) * 0.5f;
 
                 boxDataVB[4 * quad + 0].Texcoord = new Vector2(0, 0);
                 boxDataVB[4 * quad + 1].Texcoord = new Vector2(1, 0);
@@ -100,11 +100,6 @@ namespace Game
                 });
             }
 
-            // Cmaera
-            Vector3 cameraPosition = new Vector3(0.5f, 2, 0.5f);
-            Vector3 cameraTarget = new Vector3(2, 0, 2);
-            camera.SetPosition(cameraPosition, cameraTarget, Vector3.UnitY);
-
             // Characters
             Character character = new Character(box_m);
             characters.Add(character);
@@ -112,11 +107,20 @@ namespace Game
 
             active_character.PlaceToScene(ceil_size * 0.5f, physic_world);
 
-            active_character.Graph.physic_body.Velocity = new Vector3(1, 0, 1);
+            active_character.Body.physic_body.Velocity = new Vector3(1, 0, 1);
 
-            //Matrix4 a = active_character.Graph.physic_body.Matrix;
-            //physic_world.Update(1);
-            //Matrix4 b = active_character.Graph.physic_body.Matrix;
+            // Cmaera
+            MouseCaptured = true;
+
+            Vector3 cameraPosition = new Vector3(0.5f, 2, 0.5f);
+            Vector3 cameraTarget = new Vector3(2, 0, 2);
+
+            //camera = new SpectatorCamera();
+            //((SpectatorCamera)camera).SetPosition(cameraPosition, cameraTarget, Vector3.UnitY);
+
+            camera = new ThirdPersonCamera(active_character.Position, Vector3.UnitY, 3.0f);
+            //((ThirdPersonCamera)camera).SetPosition(cameraPosition, );
+            //((ThirdPersonCamera)camera).TargetPosition = ;
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Game.Graphics.Renderer.OpenGL;
 using Game.Labyrinth.Character;
+using Game.Graphics;
 
 namespace Game
 {
@@ -23,7 +24,9 @@ namespace Game
         List<Light> lights = new List<Light>();
         Shader single_color;
         DeferredRenderer renderer;
-        SpectatorCamera camera = new SpectatorCamera();
+        WireframeVisualizer wire;
+
+        Camera camera;
 
         // Labyrinth
         Labyrinth.Generator.Matrix labyrinth_matrix;
@@ -35,5 +38,12 @@ namespace Game
 
         // Physic
         Physics.Newton.World physic_world;
+
+        // Game
+        enum CameraMode
+        {
+            Free,
+            CharacterBind
+        }
     }
 }

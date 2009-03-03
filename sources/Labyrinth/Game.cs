@@ -8,6 +8,7 @@ using Game.Graphics.Window;
 using Game.Graphics.Window.InputEvents;
 using Game.Graphics.Renderer.OpenGL;
 using Game.Physics.Newton;
+using Game.Graphics;
 
 namespace Game
 {
@@ -51,6 +52,8 @@ namespace Game
 
             renderer.Render(RenderObjects, projectionMatrix, camera.ViewMatrix);
             renderer.DrawLights(RenderObjects, lights, projectionMatrix, zNear, camera);
+            RenderDebug(projectionMatrix, camera.ViewMatrix);
+
             renderer.Finish();
 
             fps.Update();
@@ -69,6 +72,8 @@ namespace Game
             renderer = new DeferredRenderer(device);
             Create();
             single_color = Loaders.LoadShader<VF.Position3>("single_color");
+
+            wire = new WireframeVisualizer(device);
         }
 
         public override void OnUnload()

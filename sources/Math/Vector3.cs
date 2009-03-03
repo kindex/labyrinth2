@@ -14,6 +14,7 @@ namespace Game
         public static Vector3 UnitY = new Vector3(0, 1, 0);
         public static Vector3 UnitZ = new Vector3(0, 0, 1);
         public static Vector3 Half = new Vector3(0.5f, 0.5f, 0.5f);
+        public static Vector3 One = new Vector3(1, 1, 1);
 
         public Vector3(float v)
         {
@@ -53,8 +54,15 @@ namespace Game
 
         public Vector3 GetNormalized()
         {
-            float len = (float)(1.0 / Math.Sqrt(X * X + Y * Y + Z * Z));
-            return new Vector3(X * len, Y * len, Z * len);
+            float len = (float)Math.Sqrt(X * X + Y * Y + Z * Z);
+            if (len != 0)
+            {
+                return new Vector3(X / len, Y / len, Z / len);
+            }
+            else
+            {
+                return Zero;
+            }
         }
 
         public static Vector3 Normalize(Vector3 v)
