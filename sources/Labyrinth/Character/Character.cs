@@ -7,7 +7,7 @@ namespace Game.Labyrinth.Character
 {
     class Character
     {
-        readonly Vector3 box_size = Vector3.Half;
+        public readonly Vector3 box_size = Vector3.Half;
         const float mass = 1.0f;
 
         public string Name { get; private set; }

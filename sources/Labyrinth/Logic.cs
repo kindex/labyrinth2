@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Game.Graphics.Window.InputEvents;
 using Game.Graphics.Window;
+using Game.Physics.Newton;
 
 namespace Game
 {
@@ -37,17 +38,6 @@ namespace Game
                     //else
                     switch (keyEvent.Key)
                     {
-                        case Key.F1:
-                            if (camera is ThirdPersonCamera)
-                            {
-                                camera = new SpectatorCamera(camera);
-                            }
-                            else
-                            {
-                                camera = new ThirdPersonCamera(camera);
-                            }
-                            break;
-
                         case Key.Escape:
                             if (MouseCaptured)
                             {
@@ -57,6 +47,23 @@ namespace Game
                             {
                                 Close();
                             }
+                            break;
+
+                        case Key.Return:
+                            if (camera is ThirdPersonCamera)
+                            {
+                                ThirdPersonCamera oldCamera = (ThirdPersonCamera)camera;
+                                camera = new SpectatorCamera(oldCamera.Position, oldCamera.TargetPosition);
+                            }
+                            else
+                            {
+                                SpectatorCamera oldCamera = (SpectatorCamera)camera;
+                                camera = new ThirdPersonCamera(active_character.Position, Vector3.UnitY, maxOrbitRadius);
+                            }
+                            break;
+
+                        case Key.F1:
+                            gameFlags.debugWifreframe = !gameFlags.debugWifreframe;
                             break;
 
                         case Key.W:
@@ -133,19 +140,51 @@ namespace Game
                 }
                 else if (camera is ThirdPersonCamera) // fixed
                 {
+                    // rotate camera
                     ThirdPersonCamera o_camera = (ThirdPersonCamera)camera;
-                    Vector3 center = active_character.Position;
-
-                    o_camera.SetTargetPosition(center);
-
+                    o_camera.SetTargetPosition(active_character.Position);
                     o_camera.Rotate(mousePos.X * Radians.PI / Height, mousePos.Y * Radians.PI / Width);
 
-                    Vector3 direction = (center - o_camera.Position).GetNormalized();
-//                    o_camera.SetPosition((center - direction) * 5, Vector3.UnitY);
-
+                    //move character
                     Vector3 real_direction = o_camera.GetMoveDirection(moveDirection);
-
                     active_character.Body.physic_body.AddImpulse(real_direction * deltaTime * 10, active_character.Position);
+
+                    //clip walls
+                    //Vector3 direction = (center - o_camera.Position).GetNormalized();
+                    bool found = false;
+
+                    o_camera.SetPosition(active_character.Position + (o_camera.Position - active_character.Position).GetNormalized() * maxOrbitRadius, Vector3.UnitY);
+
+                    float p = 1.0f;
+
+                    physic_world.RayCast(active_character.Position, o_camera.Position,
+                        delegate(Body body, Vector3 hitNormal, int collisionID, float intersectParam)
+                        {
+                            found = true;
+                            if (p > intersectParam)
+                            {
+                                p = intersectParam;
+                            }
+                            return p;
+                        },
+                        delegate(Body body, Collision collision)
+                        {
+                            return 1;
+                        });
+
+                    if (found)
+                    {
+                        float dist = (o_camera.Position - active_character.Position).Length * p;
+                        if (dist < active_character.box_size.Length/2)
+                        {
+                            dist = active_character.box_size.Length/2;
+                        }
+                        else
+                        {
+                            p *= 0.96f;
+                        }
+                        o_camera.SetPosition(active_character.Position + (o_camera.Position - active_character.Position).GetNormalized() * dist, Vector3.UnitY);
+                    }
                 }
             }
 

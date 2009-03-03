@@ -35,6 +35,7 @@ namespace Game
         // Characters
         List<Character> characters = new List<Character>();
         Character active_character;
+        const float maxOrbitRadius = 2.5f;
 
         // Physic
         Physics.Newton.World physic_world;
@@ -45,5 +46,12 @@ namespace Game
             Free,
             CharacterBind
         }
+
+        struct GameFlags
+        {
+            public bool debugWifreframe;
+        }
+        GameFlags gameFlags;
+        string windowCaption = "Labyrinth";
     }
 }

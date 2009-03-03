@@ -4,15 +4,6 @@ namespace Game
 {
     public abstract class Camera
     {
-        public Camera(Camera camera)
-        {
-            XAxis = camera.XAxis;
-            YAxis = camera.YAxis;
-            ZAxis = camera.ZAxis;
-
-            Position = camera.Position;
-        }
-
         public Camera()
         {
             XAxis = Vector3.UnitX;
@@ -82,8 +73,6 @@ namespace Game
     public abstract class FreeLookingCamera : Camera
     {
         public FreeLookingCamera() : base() { }
-
-        public FreeLookingCamera(Camera camera) : base(camera) { }
 
         public override void Move(Vector3 direction, float elapsedTimeInSecs)
         {
@@ -160,14 +149,9 @@ namespace Game
 
     public sealed class SpectatorCamera : FreeLookingCamera
     {
-        public SpectatorCamera()
-            : base()
+        public SpectatorCamera(Vector3 position, Vector3 targetPosition)
         {
-        }
-        
-        public SpectatorCamera(Camera camera)
-            : base(camera)
-        {
+            SetPosition(position, targetPosition, Vector3.UnitY);
         }
 
         protected override Vector3 ForwardMovementDirection
@@ -181,9 +165,6 @@ namespace Game
 
     public abstract class FixedLookingCamera : Camera
     {
-        public FixedLookingCamera() : base() { }
-        public FixedLookingCamera(Camera camera) : base(camera) { }
-
         public void SetPosition(Vector3 position, Vector3 up)
         {
             Position = position;
@@ -203,16 +184,6 @@ namespace Game
 
     public sealed class OrbitCamera : FixedLookingCamera
     {
-        public OrbitCamera()
-            : base()
-        {
-        }
-
-        public OrbitCamera(Camera camera)
-            : base(camera)
-        {
-        }
-
         public override void Move(Vector3 direction, float elapsedTimeInSecs)
         {
         }
@@ -264,12 +235,10 @@ namespace Game
 
     public sealed class ThirdPersonCamera : FixedLookingCamera
     {
-        public ThirdPersonCamera() : base() { }
-        public ThirdPersonCamera(Camera camera) : base(camera) { }
         public ThirdPersonCamera(Vector3 newTargetPosition, Vector3 upVector, float radious) : base()
         {
             TargetPosition = newTargetPosition;
-            Position = Position + new Vector3(-1, 1, -1).GetNormalized() * radious;
+            Position = TargetPosition + new Vector3(-1, 0, -1).GetNormalized() * radious;
 
             ZAxis = Vector3.Normalize(TargetPosition - Position);
             XAxis = Vector3.Normalize(Vector3.Cross(upVector, ZAxis));

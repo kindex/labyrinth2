@@ -67,7 +67,8 @@ namespace Game
             labyrinth_matrix = Labyrinth.Generator.Generator.Generate(7, 7, 0);
             ceil_size = new Vector3(2, 1, 3);
 
-            boxes.Add(new Box(new Vector3(0, -0.1f, 0), new Vector3(labyrinth_matrix.dim_x, 0, labyrinth_matrix.dim_y).MemberMul(ceil_size), floor_m, physic_world)); // floor
+            Box floor = new Box(new Vector3(0, -0.1f, 0), new Vector3(labyrinth_matrix.dim_x, 0, labyrinth_matrix.dim_y).MemberMul(ceil_size), floor_m, physic_world);
+            boxes.Add(floor);
             boxes.Add(new Box(new Vector3(0, 0, 0), new Vector3(0.1f, 3, 0.1f), box_m, physic_world)); // start
             boxes.Add(new Box(new Vector3(labyrinth_matrix.dim_x, 0, labyrinth_matrix.dim_y).MemberMul(ceil_size), new Vector3(labyrinth_matrix.dim_x + 0.1f, 5, labyrinth_matrix.dim_y + 0.1f).MemberMul(ceil_size), box_m, physic_world)); // finish
 
@@ -102,25 +103,24 @@ namespace Game
 
             // Characters
             Character character = new Character(box_m);
+            character.PlaceToScene(ceil_size * 0.5f, physic_world);
             characters.Add(character);
             active_character = character;
 
-            active_character.PlaceToScene(ceil_size * 0.5f, physic_world);
+            character = new Character(box_m);
+            character.PlaceToScene(ceil_size * 0.5f + new Vector3(0, 0, 1), physic_world);
+            characters.Add(character);
 
-            active_character.Body.physic_body.Velocity = new Vector3(1, 0, 1);
-
-            // Cmaera
+            // Camera
             MouseCaptured = true;
 
             Vector3 cameraPosition = new Vector3(0.5f, 2, 0.5f);
             Vector3 cameraTarget = new Vector3(2, 0, 2);
 
-            //camera = new SpectatorCamera();
-            //((SpectatorCamera)camera).SetPosition(cameraPosition, cameraTarget, Vector3.UnitY);
+            //camera = new SpectatorCamera(cameraPosition, cameraTarget);
+            camera = new ThirdPersonCamera(active_character.Position, Vector3.UnitY, maxOrbitRadius);
 
-            camera = new ThirdPersonCamera(active_character.Position, Vector3.UnitY, 3.0f);
-            //((ThirdPersonCamera)camera).SetPosition(cameraPosition, );
-            //((ThirdPersonCamera)camera).TargetPosition = ;
+            gameFlags.debugWifreframe = false;
         }
     }
 }

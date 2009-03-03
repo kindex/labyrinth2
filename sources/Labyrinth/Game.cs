@@ -45,20 +45,21 @@ namespace Game
         {
             time += deltaTime;
 
-            float zNear = 0.1f;
+            float zNear = 0.01f;
             float zFar = 100.0f;
 
             Matrix4 projectionMatrix = Matrix4.Perspective(45.0f, (float)device.Width / (float)device.Height, zNear, zFar);
 
-            renderer.Render(RenderObjects, projectionMatrix, camera.ViewMatrix);
+            Matrix4 viewMatrix = camera.ViewMatrix;
+            renderer.Render(RenderObjects, projectionMatrix, viewMatrix);
             renderer.DrawLights(RenderObjects, lights, projectionMatrix, zNear, camera);
-            RenderDebug(projectionMatrix, camera.ViewMatrix);
+            RenderDebug(projectionMatrix, viewMatrix);
 
             renderer.Finish();
 
             fps.Update();
 
-            Title = fps.Framerate.ToString();
+            Title = windowCaption + " " + fps.Framerate.ToString();
         }
 
         public override void OnLoad()

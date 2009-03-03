@@ -11,12 +11,6 @@ namespace Game
 
         Matrix4 physicOffsetMatrix;
 
-        //public Box(Matrix4 matrix, Material material)
-        //{
-        //    this.matrix = matrix;
-        //    this.material = material;
-        //}
-
         public Box(Vector3 min_point, Vector3 max_point, Material material, Physics.Newton.World world)
         {
             Vector3 box_size = max_point - min_point;
@@ -41,6 +35,7 @@ namespace Game
         {
             Device device = Device.Current;
             device.SetMatrix(MatrixModeEnum.ModelView, physicOffsetMatrix * physic_body.Matrix * viewMatrix);
+            
             device.DrawElements(BeginMode.Triangles, 0, 6 * 6);
         }
     }
