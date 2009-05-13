@@ -7,11 +7,15 @@ namespace Game.Labyrinth.Character
 {
     class Character
     {
+ 
         public readonly Vector3 box_size = Vector3.Half;
         const float mass = 1.0f;
 
         public string Name { get; private set; }
         public Box Body { get; private set; }
+
+        public float LastY { get; set; }
+        public JumpState Jump { get; set; }
 
         Material material;
 
@@ -31,6 +35,8 @@ namespace Game.Labyrinth.Character
                 {
                     body.AddForce(new Vector3(0, -9.8f, 0) * mass);
                 };
+            Jump = JumpState.jsOnGround;
+            LastY = Position.Y;
         }
 
         public Vector3 Position

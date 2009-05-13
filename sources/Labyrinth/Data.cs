@@ -11,6 +11,7 @@ namespace Game
     {
         FPS fps = new FPS();
         Vector3 move = Vector3.Zero;
+        Vector3 jumpHeight = new Vector3(0.0f, 50.0f, 0.0f);
         Device device;
         bool visualize_volume = false;
         List<Box> boxes = new List<Box>();
@@ -46,7 +47,7 @@ namespace Game
             Free,
             CharacterBind
         }
-
+       
         struct GameFlags
         {
             public bool debugWifreframe;
@@ -54,4 +55,14 @@ namespace Game
         GameFlags gameFlags;
         string windowCaption = "Labyrinth";
     }
+
+    // Jump state
+    public enum JumpState
+    {
+        jsOnGround,
+        jsDoJump,
+        jsGoingUp,
+        jsGoingDown
+    };
+
 }

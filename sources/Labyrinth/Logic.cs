@@ -89,6 +89,13 @@ namespace Game
                         case Key.Z:
                             move.Y -= 1.0f;
                             break;
+                        
+                        case Key.J:
+                            if (active_character.Jump == JumpState.jsOnGround) 
+                            {
+                                active_character.Jump = JumpState.jsDoJump;
+                            }
+                            break;
 
                         case Key.Space:
                             visualize_volume = !visualize_volume;
@@ -148,6 +155,29 @@ namespace Game
                     //move character
                     Vector3 real_direction = o_camera.GetMoveDirection(moveDirection);
                     active_character.Body.physic_body.AddImpulse(real_direction * deltaTime * 10, active_character.Position);
+
+                    if (active_character.Jump == JumpState.jsDoJump)
+                    {
+                        active_character.Body.physic_body.AddImpulse(jumpHeight * deltaTime * 10, active_character.Position);
+                        active_character.Jump = JumpState.jsGoingUp;
+                        active_character.LastY = active_character.Position.Y - 1.0f;
+                    }
+                    else if (active_character.Jump == JumpState.jsGoingUp)
+                    {
+                        if (active_character.Position.Y - active_character.LastY <= 0.0f)
+                        {
+                            active_character.Jump = JumpState.jsGoingDown;
+                        }
+                        active_character.LastY = active_character.Position.Y;
+                    }
+                    else if (active_character.Jump == JumpState.jsGoingDown)
+                    {
+                        if (Math.Round(active_character.LastY - active_character.Position.Y, 1, MidpointRounding.AwayFromZero) <= 0.0f)
+                        {
+                            active_character.Jump = JumpState.jsOnGround;
+                        }
+                        active_character.LastY = active_character.Position.Y;
+                    }
 
                     //clip walls
                     //Vector3 direction = (center - o_camera.Position).GetNormalized();
