@@ -24,7 +24,7 @@ namespace Game
             physic_body.Matrix = Matrix4.Translation((min_point + max_point)/2);
             physic_body.CentreOfMass = origin;
 
-            physicOffsetMatrix = Matrix4.Scale(box_size); // *Matrix4.Translation(-box_size / 2);
+            physicOffsetMatrix = Matrix4.Scale(box_size);
 
             collision.Release();
 
@@ -35,7 +35,6 @@ namespace Game
         {
             Device device = Device.Current;
             device.SetMatrix(MatrixModeEnum.ModelView, physicOffsetMatrix * physic_body.Matrix * viewMatrix);
-            
             device.DrawElements(BeginMode.Triangles, 0, 6 * 6);
         }
     }

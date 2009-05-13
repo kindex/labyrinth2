@@ -9,7 +9,7 @@ namespace Game
 {
     sealed partial class Game
     {
-        public override void OnUpdate(float deltaTime)
+        public override void OnUpdate(float deltaTime, double totalTime)
         {
             // Physic
             physic_world.Update(deltaTime);

@@ -25,6 +25,8 @@ namespace Game.Labyrinth.Character
             Body = new Box(position - box_size / 2, position + box_size / 2, material, world);
 
             Body.physic_body.SetMass(mass, mass*Body.inertia);
+
+            // global gravity
             Body.physic_body.SetForceAndTorqueEvent += delegate(Physics.Newton.Body body, float timestep, int threadIndex)
                 {
                     body.AddForce(new Vector3(0, -9.8f, 0) * mass);

@@ -70,7 +70,7 @@ namespace Game.Graphics.Window
 
         public void Run()
         {
-                Logger.write("Done loading native libraries");
+            Logger.write("Done loading native libraries");
             OnLoad();
             try
             {
@@ -89,9 +89,10 @@ namespace Game.Graphics.Window
                     long delta = current - time;
                     float deltaTime = (float)(delta * invFreq);
                     time = current;
+                    double totalTime = DateTime.Now.TimeOfDay.TotalSeconds;
 
-                    OnUpdate(deltaTime);
-                    OnRender(deltaTime);
+                    OnUpdate(deltaTime, totalTime);
+                    OnRender(deltaTime, totalTime);
 
                     _window.Context.SwapBuffers();
                 }
@@ -103,11 +104,11 @@ namespace Game.Graphics.Window
             }
         }
 
-        public virtual void OnUpdate(float deltaTime)
+        public virtual void OnUpdate(float deltaTime, double totalTime)
         {
         }
 
-        public virtual void OnRender(float deltaTime)
+        public virtual void OnRender(float deltaTime, double totalTime)
         {
         }
 

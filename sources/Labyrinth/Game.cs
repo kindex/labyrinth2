@@ -41,7 +41,7 @@ namespace Game
         {
         }
 
-        public override void OnRender(float deltaTime)
+        public override void OnRender(float deltaTime, double totalTime)
         {
             time += deltaTime;
 
@@ -79,6 +79,7 @@ namespace Game
 
         public override void OnUnload()
         {
+            wire.Dispose();
             renderer.Dispose();
 
             DisposeObjects();

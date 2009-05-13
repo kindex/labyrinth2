@@ -30,5 +30,10 @@ namespace Game
         {
             System.Diagnostics.Trace.WriteLine(DateTime.Now.ToString() + "\t" + message);
         }
+
+        public static void write(string module, string message)
+        {
+            System.Diagnostics.Trace.WriteLine(DateTime.Now.ToString() + "\t" + module + ": " + message);
+        }
     }
 }

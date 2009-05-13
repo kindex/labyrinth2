@@ -130,6 +130,7 @@
     <Compile Include="Math\Vector2.cs" />
     <Compile Include="Math\Vector3.cs" />
     <Compile Include="Math\Vector4.cs" />
+    <Compile Include="Networing\Client.cs" />
     <Compile Include="Networing\Lidgren\NetBase.cs" />
     <Compile Include="Networing\Lidgren\NetBase.Recycling.cs" />
     <Compile Include="Networing\Lidgren\NetBase.SimulateLag.cs" />
@@ -163,6 +164,8 @@
     <Compile Include="Networing\Lidgren\NetServer.cs" />
     <Compile Include="Networing\Lidgren\NetTime.cs" />
     <Compile Include="Networing\Lidgren\NetUtility.cs" />
+    <Compile Include="Networing\Protocol.cs" />
+    <Compile Include="Networing\Server.cs" />
     <Compile Include="Physics\Newton\Body.cs" />
     <Compile Include="Physics\Newton\Collision.cs" />
     <Compile Include="Physics\Newton\CollisionInfo.cs" />
