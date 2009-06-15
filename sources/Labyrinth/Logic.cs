@@ -4,6 +4,7 @@ using System.Text;
 using Game.Graphics.Window.InputEvents;
 using Game.Graphics.Window;
 using Game.Physics.Newton;
+using Game.Labyrinth.Character;
 
 namespace Game
 {
@@ -89,17 +90,15 @@ namespace Game
                         case Key.Z:
                             move.Y -= 1.0f;
                             break;
-                        
-                        case Key.J:
-                            if (active_character.Jump == JumpState.jsOnGround) 
-                            {
-                                active_character.Jump = JumpState.jsDoJump;
-                            }
-                            break;
 
                         case Key.Space:
                             visualize_volume = !visualize_volume;
                             break;
+
+                        case Key.J:
+                            active_character.Jump();
+                            break;
+
                     }
                 }
                 else if (ev is KeyReleasedEvent)
@@ -154,30 +153,7 @@ namespace Game
 
                     //move character
                     Vector3 real_direction = o_camera.GetMoveDirection(moveDirection);
-                    active_character.Body.physic_body.AddImpulse(real_direction * deltaTime * 10, active_character.Position);
-
-                    if (active_character.Jump == JumpState.jsDoJump)
-                    {
-                        active_character.Body.physic_body.AddImpulse(jumpHeight * deltaTime * 10, active_character.Position);
-                        active_character.Jump = JumpState.jsGoingUp;
-                        active_character.LastY = active_character.Position.Y - 1.0f;
-                    }
-                    else if (active_character.Jump == JumpState.jsGoingUp)
-                    {
-                        if (active_character.Position.Y - active_character.LastY <= 0.0f)
-                        {
-                            active_character.Jump = JumpState.jsGoingDown;
-                        }
-                        active_character.LastY = active_character.Position.Y;
-                    }
-                    else if (active_character.Jump == JumpState.jsGoingDown)
-                    {
-                        if (Math.Round(active_character.LastY - active_character.Position.Y, 1, MidpointRounding.AwayFromZero) <= 0.0f)
-                        {
-                            active_character.Jump = JumpState.jsOnGround;
-                        }
-                        active_character.LastY = active_character.Position.Y;
-                    }
+                    active_character.Accelerate(real_direction, deltaTime);
 
                     //clip walls
                     //Vector3 direction = (center - o_camera.Position).GetNormalized();
@@ -205,9 +181,9 @@ namespace Game
                     if (found)
                     {
                         float dist = (o_camera.Position - active_character.Position).Length * p;
-                        if (dist < active_character.box_size.Length/2)
+                        if (dist < Character.box_size.Length / 2)
                         {
-                            dist = active_character.box_size.Length/2;
+                            dist = Character.box_size.Length / 2;
                         }
                         else
                         {

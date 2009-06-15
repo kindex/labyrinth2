@@ -1,5 +1,9 @@
 using System.Diagnostics;
 using System.IO;
+using System;
+
+[assembly: CLSCompliant(false)]
+
 
 namespace Game
 {
