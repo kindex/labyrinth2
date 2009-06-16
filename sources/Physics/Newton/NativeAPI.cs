@@ -58,7 +58,7 @@ namespace Game.Physics.Newton
         public delegate int NewtonOnAABBOverlap(IntPtr material, IntPtr body0, IntPtr body1, int threadIndex);
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-        public delegate int NewtonContactProcess(IntPtr material, IntPtr body0, IntPtr body1, float timestemp, int threadIndex);
+        public delegate int NewtonContactProcess(IntPtr contact, float timestemp, int threadIndex);
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
         public delegate void NewtonBodyIterator(IntPtr body);

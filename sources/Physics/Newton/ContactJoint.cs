@@ -17,7 +17,7 @@ namespace Game.Physics.Newton
             NativeAPI.ContactJointRemoveContact(handle, contact.handle);
         }
 
-        public IEnumerator<Contact> Contacts
+        public IEnumerable<Contact> Contacts
         {
             get
             {

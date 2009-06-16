@@ -105,11 +105,13 @@ namespace Game.Physics.Newton
             return self.AABBOverlap(new MaterialCollision(material), Body.FromNewtonBody(body0), Body.FromNewtonBody(body1), threadIndex) ? 1 : 0;
         }
 
-        static int ContactProcessHandler(IntPtr material, IntPtr body0, IntPtr body1, float timestep, int threadIndex)
+        static int ContactProcessHandler(IntPtr contact, float timestep, int threadIndex)
         {
-            MaterialPair self = FromMaterialPair(material);
+            //ContactJoint joint = new ContactJoint(contact);
+            //MaterialPair self = FromMaterialPair(material);
 
-            return self.ContactProcess(new MaterialCollision(material), Body.FromNewtonBody(body0), Body.FromNewtonBody(body1), timestep, threadIndex) ? 1 : 0;
+            //return self.ContactProcess(new MaterialCollision(material), Body.FromNewtonBody(body0), Body.FromNewtonBody(body1), timestep, threadIndex) ? 1 : 0;
+            return 0;
         }
 
         static NativeAPI.NewtonOnAABBOverlap NativeOnAABBOverlapHandler = new NativeAPI.NewtonOnAABBOverlap(OnAABBOverlapHandler);
