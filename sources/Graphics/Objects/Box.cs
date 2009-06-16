@@ -3,7 +3,7 @@ using Game.Graphics;
 
 namespace Game
 {
-    public sealed class Box
+    public class Box
     {
         public Material material { get; private set; }
         public Physics.Newton.Body physic_body { get; private set; }
@@ -21,7 +21,8 @@ namespace Game
             Vector3 inertia;
             collision.CalculateInertialMatrix(out inertia, out origin);
             this.inertia = inertia;
-            physic_body.Matrix = Matrix4.Translation((min_point + max_point)/2);
+            Matrix4 matrix = getMatrix(min_point, max_point);
+            physic_body.Matrix = matrix;
             physic_body.CentreOfMass = origin;
 
             physicOffsetMatrix = Matrix4.Scale(box_size);
@@ -37,5 +38,25 @@ namespace Game
             device.SetMatrix(MatrixModeEnum.ModelView, physicOffsetMatrix * physic_body.Matrix * viewMatrix);
             device.DrawElements(BeginMode.Triangles, 0, 6 * 6);
         }
+
+        virtual public Matrix4 getMatrix(Vector3 min_point, Vector3 max_point)
+        {
+            return Matrix4.Translation((min_point + max_point) / 2);
+        }
     }
+
+    public sealed class WallBox : Box
+    {
+        public WallBox(Vector3 min_point, Vector3 max_point, Material material, Physics.Newton.World world)
+             : base(min_point, max_point, material, world)
+        {
+            
+        }
+
+        override public Matrix4 getMatrix(Vector3 min_point, Vector3 max_point)
+        {
+            return base.getMatrix(min_point, max_point) * Matrix4.RotateZ(-0.05f) * Matrix4.RotateX(0.05f); // all world is rotated
+        }
+    }
+
 }

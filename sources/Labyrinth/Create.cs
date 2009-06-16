@@ -9,10 +9,18 @@ namespace Game
 {
     sealed partial class Game
     {
+        //bool ContactProcessEventHandler(Physics.Newton.MaterialCollision material, Physics.Newton.Body body0, Physics.Newton.Body body1, float timestep, int threadIndex)
+        //{
+        //    return true;
+        //}
+
         void Create()
         {
             // Physic
             physic_world = new Physics.Newton.World();
+            //material_pair = new Physics.Newton.MaterialPair(physic_world, physic_world.DefaultMaterialID, physic_world.DefaultMaterialID);
+            //material_pair.SetCollisionCallback(null, ContactProcessEventHandler);
+
 
             // create box graph
             Vector3[] quadN = { 
@@ -68,6 +76,7 @@ namespace Game
             ceil_size = new Vector3(2, 1, 3);
 
             Box floor = new Box(new Vector3(0, -0.1f, 0), new Vector3(labyrinth_matrix.dim_x, 0, labyrinth_matrix.dim_y).MemberMul(ceil_size), floor_m, physic_world);
+
             boxes.Add(floor);
             boxes.Add(new Box(new Vector3(0, 0, 0), new Vector3(0.1f, 3, 0.1f), box_m, physic_world)); // start
             boxes.Add(new Box(new Vector3(labyrinth_matrix.dim_x, 0, labyrinth_matrix.dim_y).MemberMul(ceil_size), new Vector3(labyrinth_matrix.dim_x + 0.1f, 5, labyrinth_matrix.dim_y + 0.1f).MemberMul(ceil_size), box_m, physic_world)); // finish
@@ -78,11 +87,11 @@ namespace Game
                 {
                     if (labyrinth_matrix.isUpBorder(x, y))
                     {
-                        boxes.Add(new Box(new Vector3(x, 0, y + 1).MemberMul(ceil_size), new Vector3(x + 1, 1, y + 1.1f).MemberMul(ceil_size), box_m, physic_world));
+                        boxes.Add(new WallBox(new Vector3(x, 0, y + 1).MemberMul(ceil_size), new Vector3(x + 1, 1, y + 1.1f).MemberMul(ceil_size), box_m, physic_world));
                     }
                     if (labyrinth_matrix.isRightBorder(x, y))
                     {
-                        boxes.Add(new Box(new Vector3(x + 1, 0, y).MemberMul(ceil_size), new Vector3(x + 1.1f, 1, y + 1).MemberMul(ceil_size), box_m, physic_world));
+                        boxes.Add(new WallBox(new Vector3(x + 1, 0, y).MemberMul(ceil_size), new Vector3(x + 1.1f, 1, y + 1).MemberMul(ceil_size), box_m, physic_world));
                     }
                 }
             }
