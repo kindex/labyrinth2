@@ -64,32 +64,11 @@ namespace Game.Labyrinth.Character
                 }
             }
             return false;
-
-
-            //bool found = false;
-            //float p = 1.0f;
-
-            //world.RayCast(this.Position, this.Position - new Vector3(0.0f, box_size.Length/4 + 0.1f, 0.0f),
-            //delegate(Body body, Vector3 hitNormal, int collisionID, float intersectParam)
-            //{
-            //    found = true;
-            //    if (p > intersectParam)
-            //    {
-            //        p = intersectParam;
-            //    }
-            //    return p;
-            //},
-            //delegate(Body body, Collision collision)
-            //{
-            //    return 1;
-            //});
-
-            //return found;
         }
 
         internal void Jump()
         {
-//            if (isStanding())
+            if (isStanding())
             {
                 float t = (float)Math.Sqrt(2.0f * jump_height / -gravity.Y);
 
@@ -100,9 +79,10 @@ namespace Game.Labyrinth.Character
 
         internal void Accelerate(Vector3 real_direction, float deltaTime)
         {
-            if (isStanding())
+            bool stands = isStanding();
+            float k = stands ? 10.0f : 5.0f; // on fly accedlerate two times slower
             {
-                Body.physic_body.AddImpulse(real_direction * deltaTime * 10, this.Position);
+                Body.physic_body.AddImpulse(real_direction * deltaTime * k, this.Position);
             }
         }
     }
